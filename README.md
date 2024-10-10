@@ -19,12 +19,16 @@ Bookserv is a Node.js back-end service which exposes REST APIs for querying book
 
 ### Structure
 
+Author name,Book Title,Average Rating,Rating Category,Publishing Date,Pages
+
     {
-    	ISBN,
-    	Title,
-    	Author,
-    	Publishing Year,
-    	Pages,
+      ISBN,
+      Title,
+      Author,
+      Average Rating,
+      Rating Category,
+      Publishing Date,
+      Pages,
     }
 
 ### Example
