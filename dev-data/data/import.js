@@ -46,7 +46,6 @@ async function importData() {
     })
     .on('end', async function () {
       await BookModel.create(bookArr);
-      console.log(bookArr);
       console.log('import completed');
     });
 }
@@ -54,7 +53,6 @@ async function importData() {
 async function deleteData() {
   try {
     const res = await BookModel.deleteMany();
-    console.log(res);
   } catch (err) {
     console.error(err);
   } finally {
@@ -65,6 +63,6 @@ async function deleteData() {
 function generateISBN() {
   return `ISBN-${String(Math.trunc(Math.random() * Math.pow(10, 10))).padStart(
     10,
-    0
+    0,
   )}`;
 }

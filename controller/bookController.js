@@ -33,7 +33,6 @@ const findOneDocument = async function (filter, errMsg, res) {
   if (!book)
     return res.status(HTTP_404_NOT_FOUND).json({
       status: FAIL,
-      // message: `No book found with ${req.params.isbn}`,
       message: errMsg,
     });
 
