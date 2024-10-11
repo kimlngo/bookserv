@@ -46,5 +46,15 @@ bookSchema.pre('save', function (next) {
   next();
 });
 
+//benchmark find operations
+bookSchema.pre(/^find/, function (next) {
+  this.startTime = Date.now();
+  next();
+});
+
+bookSchema.post(/^find/, function (docs, next) {
+  console.log(`Query took: ${Date.now() - this.startTime} ms`);
+  next();
+});
 const BookModel = new mongoose.model('Book', bookSchema);
 module.exports = BookModel;
