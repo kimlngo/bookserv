@@ -3,6 +3,7 @@ const fs = require('fs');
 const csv = require('csv-parser');
 const BookModel = require('./../../model/bookModel');
 const { ENV } = require('./../../util/constant');
+const { generateISBN } = require('./../../util/isbn');
 const dotenv = require('dotenv');
 dotenv.config({ path: './config.env' });
 
@@ -15,12 +16,15 @@ mongoose.connect(DB_CONNECTION).then(function () {
   console.log('DB Connection Successful');
   console.log(`operation = ${process.argv[2]}`);
 
-  if (process.argv[2] === IMPORT) {
-    importData();
-  } else if (process.argv[2] === DELETE) {
-    deleteData();
-  } else {
-    console.log('unsupported command - exit now!');
+  try {
+    if (process.argv[2] === IMPORT) {
+      importData();
+    } else if (process.argv[2] === DELETE) {
+      deleteData();
+    } else {
+      console.log('unsupported command - exit now!');
+    }
+  } finally {
     process.exit();
   }
 });
@@ -58,11 +62,4 @@ async function deleteData() {
   } finally {
     process.exit();
   }
-}
-
-function generateISBN() {
-  return `ISBN-${String(Math.trunc(Math.random() * Math.pow(10, 10))).padStart(
-    10,
-    0,
-  )}`;
 }
