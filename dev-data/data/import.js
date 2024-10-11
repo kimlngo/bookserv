@@ -16,16 +16,12 @@ mongoose.connect(DB_CONNECTION).then(function () {
   console.log('DB Connection Successful');
   console.log(`operation = ${process.argv[2]}`);
 
-  try {
-    if (process.argv[2] === IMPORT) {
-      importData();
-    } else if (process.argv[2] === DELETE) {
-      deleteData();
-    } else {
-      console.log('unsupported command - exit now!');
-    }
-  } finally {
-    process.exit();
+  if (process.argv[2] === IMPORT) {
+    importData();
+  } else if (process.argv[2] === DELETE) {
+    deleteData();
+  } else {
+    console.log('unsupported command - exit now!');
   }
 });
 
@@ -51,12 +47,14 @@ async function importData() {
     .on('end', async function () {
       await BookModel.create(bookArr);
       console.log('import completed');
+      process.exit();
     });
 }
 
 async function deleteData() {
   try {
     const res = await BookModel.deleteMany();
+    console.log(res);
   } catch (err) {
     console.error(err);
   } finally {

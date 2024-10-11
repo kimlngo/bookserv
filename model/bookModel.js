@@ -3,7 +3,7 @@ const slugify = require('slugify');
 
 const bookSchema = new mongoose.Schema(
   {
-    ISBN: {
+    isbn: {
       type: String,
       require: [true, 'A book must have ISBN number'],
     },

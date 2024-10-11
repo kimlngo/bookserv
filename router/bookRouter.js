@@ -4,7 +4,7 @@ const bookCtrl = require('./../controller/bookController');
 const router = express.Router();
 
 //get All Books
-router.route('/').get(bookCtrl.getAllBooks);
+router.route('/').get(bookCtrl.getAllBooks).post(bookCtrl.createNewBook);
 
 //get Books by ISBN
 router.route('/ISBN-:isbn').get(bookCtrl.getBookByISBN);

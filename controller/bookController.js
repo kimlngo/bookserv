@@ -2,8 +2,10 @@ const {
   FAIL,
   SUCCESS,
   HTTP_200_OK,
+  HTTP_201_CREATED,
   HTTP_404_NOT_FOUND,
 } = require('../util/constant');
+const { generateISBN } = require('./../util/isbn');
 const BookModel = require('./../model/bookModel');
 
 exports.getAllBooks = async function (req, res, next) {
@@ -27,6 +29,7 @@ exports.getBookBySlug = async function (req, res, next) {
   const slug = req.params.slug;
   return findOneDocument({ slug }, `No book found with slug ${slug}`, res);
 };
+
 const findOneDocument = async function (filter, errMsg, res) {
   const book = await BookModel.findOne(filter);
 
@@ -41,5 +44,26 @@ const findOneDocument = async function (filter, errMsg, res) {
     data: {
       book,
     },
+  });
+};
+
+exports.createNewBook = async function (req, res, next) {
+  const body = req.body;
+
+  const insertBook = {
+    isbn: generateISBN(),
+    author: body.author,
+    title: body.title,
+    averageRatings: body.averageRatings,
+    ratingCategory: body.ratingCategory,
+    publishingDate: new Date(body.publishingDate),
+    pages: body.pages,
+  };
+
+  const book = await BookModel.create(insertBook);
+
+  res.status(HTTP_201_CREATED).json({
+    status: SUCCESS,
+    data: { book },
   });
 };
