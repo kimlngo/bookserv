@@ -34,5 +34,11 @@ Author name,Book Title,Average Rating,Rating Category,Publishing Date,Pages
 ### Example
 
     {
-      <TBD>
+      isbn: 'ISBN-2025319189',
+      author: 'J.K. Rowling',
+      title: 'Harry Potter and the Order of the Phoenix (Harry Potter #5)',
+      averageRatings: 4.5,
+      ratingCategory: 'High',
+      publishingDate: 2003-06-21T04:00:00.000Z,
+      pages: 912
     }
