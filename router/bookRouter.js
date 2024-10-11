@@ -7,9 +7,15 @@ const router = express.Router();
 router.route('/').get(bookCtrl.getAllBooks).post(bookCtrl.createNewBook);
 
 //get Books by ISBN
-router.route('/ISBN-:isbn').get(bookCtrl.getBookByISBN);
+router
+  .route('/ISBN-:isbn')
+  .get(bookCtrl.getBookByISBN)
+  .delete(bookCtrl.deleteBookByISBN);
 
 //get book by slug
-router.route('/:slug').get(bookCtrl.getBookBySlug);
+router
+  .route('/:slug')
+  .get(bookCtrl.getBookBySlug)
+  .delete(bookCtrl.deleteBookBySlug);
 
 module.exports = router;

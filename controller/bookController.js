@@ -3,6 +3,7 @@ const {
   SUCCESS,
   HTTP_200_OK,
   HTTP_201_CREATED,
+  HTTP_204_NO_CONTENT,
   HTTP_404_NOT_FOUND,
 } = require('../util/constant');
 const { generateISBN } = require('./../util/isbn');
@@ -67,3 +68,29 @@ exports.createNewBook = async function (req, res, next) {
     data: { book },
   });
 };
+
+exports.deleteBookByISBN = async function (req, res, next) {
+  const isbn = `ISBN-${req.params.isbn}`;
+  return deleteOne({ isbn }, `No book found with ${isbn}`, res);
+};
+
+exports.deleteBookBySlug = async function (req, res, next) {
+  const slug = req.params.slug;
+  return deleteOne({ slug }, `No book found with slug ${slug}`, res);
+};
+
+async function deleteOne(condition, errorMsg, res) {
+  const response = await BookModel.deleteOne(condition);
+
+  if (response?.deletedCount !== 1) {
+    return res.status(HTTP_404_NOT_FOUND).json({
+      status: FAIL,
+      message: errorMsg,
+    });
+  }
+
+  return res.status(HTTP_204_NO_CONTENT).json({
+    status: SUCCESS,
+    data: null,
+  });
+}
