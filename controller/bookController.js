@@ -9,6 +9,20 @@ const {
 const { generateISBN } = require('./../util/isbn');
 const BookModel = require('./../model/bookModel');
 
+const ALLOWABLE_FIELDS = [
+  'title',
+  'author',
+  'averageRatings',
+  'ratingCategory',
+  'publishingDate',
+  'pages',
+];
+
+const UPDATE_OPTIONS = {
+  new: true,
+  runValidators: true,
+};
+
 exports.getAllBooks = async function (req, res, next) {
   const allBooks = await BookModel.find();
 
@@ -92,5 +106,50 @@ async function deleteOne(condition, errorMsg, res) {
   return res.status(HTTP_204_NO_CONTENT).json({
     status: SUCCESS,
     data: null,
+  });
+}
+
+exports.updateBookByISBN = async function (req, res, next) {
+  const isbn = `ISBN-${req.params.isbn}`;
+  const filter = { isbn };
+
+  return updateBook(filter, req, res, `Fail to update book with ${isbn}`);
+};
+
+exports.updateBookBySlug = async function (req, res, next) {
+  const slug = req.params.slug;
+  const filter = { slug };
+
+  return updateBook(filter, req, res, `Fail to update book with slug ${slug}`);
+};
+
+async function updateBook(filter, req, res, errorMsg) {
+  let updateBody = {};
+
+  //filter to only allow update certain fields
+  ALLOWABLE_FIELDS.forEach(field => {
+    if (req.body[`${field}`]) {
+      updateBody[`${field}`] = req.body[`${field}`];
+    }
+  });
+
+  const updatedBook = await BookModel.findOneAndUpdate(
+    filter,
+    updateBody,
+    UPDATE_OPTIONS,
+  );
+
+  if (!updatedBook) {
+    return res.status(HTTP_404_NOT_FOUND).json({
+      status: FAIL,
+      message: errorMsg,
+    });
+  }
+
+  return res.status(HTTP_200_OK).json({
+    status: SUCCESS,
+    data: {
+      book: updatedBook,
+    },
   });
 }
