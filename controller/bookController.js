@@ -153,3 +153,32 @@ async function updateBook(filter, req, res, errorMsg) {
     },
   });
 }
+
+exports.getBookStats = async function (req, res, next) {
+  const stats = await BookModel.aggregate([
+    {
+      $group: {
+        _id: { $toUpper: '$ratingCategory' },
+        count: { $sum: 1 },
+        avgPages: { $avg: '$pages' },
+        avgRatings: { $avg: '$averageRatings' },
+      },
+    },
+    {
+      $addFields: {
+        avgPages: { $round: ['$avgPages', 0] },
+        avgRatings: { $round: ['$avgRatings', 2] },
+      },
+    },
+    {
+      $sort: { _id: 1 },
+    },
+  ]);
+
+  res.status(HTTP_200_OK).json({
+    status: SUCCESS,
+    data: {
+      stats,
+    },
+  });
+};

@@ -15,9 +15,12 @@ router
 
 //get book by slug
 router
-  .route('/:slug')
+  .route('/slug/:slug')
   .get(bookCtrl.getBookBySlug)
   .patch(bookCtrl.updateBookBySlug)
   .delete(bookCtrl.deleteBookBySlug);
+
+//get book statistic
+router.route('/stats').get(bookCtrl.getBookStats);
 
 module.exports = router;

@@ -11,6 +11,10 @@ Bookserv is a Node.js back-end service which exposes REST APIs for querying book
 - PATCH: /api/v1/books - update a book in inventory
 - DELETE: /api/v1/books - delete a book in inventory
 
+## Statistic API
+
+- GET: /api/v1/books/stats - get book statistic
+
 ## Requirements
 
 - Indexing on ISBN & title-slug
@@ -33,6 +37,8 @@ Author name,Book Title,Average Rating,Rating Category,Publishing Date,Pages
 
 ### Example
 
+#### Book Detail
+
     {
       isbn: 'ISBN-2025319189',
       author: 'J.K. Rowling',
@@ -41,4 +47,23 @@ Author name,Book Title,Average Rating,Rating Category,Publishing Date,Pages
       ratingCategory: 'High',
       publishingDate: 2003-06-21T04:00:00.000Z,
       pages: 912
+    }
+
+#### Book Statistic
+
+    {
+      "stats": [
+        {
+            "_id": "HIGH",
+            "count": 60,
+            "avgPages": 518,
+            "avgRatings": 4.26
+        },
+        {
+            "_id": "MEDIUM",
+            "count": 26,
+            "avgPages": 339,
+            "avgRatings": 3.88
+        }
+      ]
     }
